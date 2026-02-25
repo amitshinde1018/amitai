@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Amit AI - Profile</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: #0a0a0a;
+            color: white;
+        }
+        .navbar {
+            background: #1a1a1a;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #ff1493;
+        }
+        .navbar h1 { color: #ff1493; font-size: 22px; }
+        .nav-links { display: flex; gap: 15px; }
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .nav-links a:hover { color: #ff1493; background: #2a2a2a; }
+        .logout {
+            background: linear-gradient(135deg, #ff1493, #c0006a) !important;
+            color: white !important;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+        .profile-card {
+            background: #1a1a1a;
+            border: 1px solid rgba(255, 20, 147, 0.3);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(255, 20, 147, 0.15);
+        }
+        .avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #ff1493, #c0006a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin: 0 auto 20px;
+        }
+        .profile-card h2 { color: #ff1493; font-size: 26px; margin-bottom: 5px; }
+        .profile-card p { color: #888; margin-bottom: 30px; }
+        .info-box {
+            background: #2a2a2a;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #333;
+        }
+        .info-row:last-child { border-bottom: none; }
+        .info-row .label { color: #888; font-size: 14px; }
+        .info-row .value { color: white; font-weight: bold; }
+        .back-btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #ff1493, #c0006a);
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .back-btn:hover { opacity: 0.85; transform: scale(1.02); }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>🤖 Amit AI</h1>
+        <div class="nav-links">
+            <a href="/dashboard">Dashboard</a>
+            <a href="/logout" class="logout">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <div class="profile-card">
+            <div class="avatar">👤</div>
+            <h2>{{ username }}</h2>
+            <p>Amit AI Member</p>
+            <div class="info-box">
+                <div class="info-row">
+                    <span class="label">Username</span>
+                    <span class="value">{{ username }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Email</span>
+                    <span class="value">{{ email }}</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Role</span>
+                    <span class="value">Member</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Status</span>
+                    <span class="value" style="color: #ff1493;">● Active</span>
+                </div>
+            </div>
+            <a href="/dashboard" class="back-btn">← Dashboard var ja</a>
+        </div>
+    </div>
+</body>
+</html>
