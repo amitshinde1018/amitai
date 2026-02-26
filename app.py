@@ -111,8 +111,10 @@ def admin():
     cur = conn.cursor()
     cur.execute('SELECT id, username, email, role FROM users')
     users = cur.fetchall()
+    cur.execute('SELECT id, naam, mobile, vay, education, gaav, kaay_hav, user_email FROM forms')
+    forms_data = cur.fetchall()
     conn.close()
-    return render_template('admin.html', users=users, username=session['user'])
+    return render_template('admin.html', users=users, forms_data=forms_data, username=session['user'])
 
 @app.route('/admin/delete/<int:user_id>')
 def delete_user(user_id):
