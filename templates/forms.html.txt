@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amit AI - Forms</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0a0a; color: white; font-family: Arial, sans-serif; }
+        nav { background: #111; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ff2d8d; }
+        nav h1 { color: #ff2d8d; font-size: 24px; }
+        nav a { color: white; text-decoration: none; margin-left: 20px; }
+        .container { max-width: 600px; margin: 50px auto; padding: 20px; }
+        h2 { text-align: center; color: #ff2d8d; margin-bottom: 30px; font-size: 28px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; color: #ff2d8d; font-weight: bold; }
+        input, textarea, select { width: 100%; padding: 12px; background: #1a1a1a; border: 1px solid #ff2d8d; border-radius: 8px; color: white; font-size: 16px; }
+        textarea { height: 100px; resize: none; }
+        button { width: 100%; padding: 14px; background: #ff2d8d; color: white; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; margin-top: 10px; }
+        button:hover { background: #d4006e; }
+        .success { background: #1a4a1a; border: 1px solid #00ff00; padding: 15px; border-radius: 8px; text-align: center; color: #00ff00; margin-bottom: 20px; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>🤖 Amit AI</h1>
+        <div>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <h2>📋 Amit AI Form</h2>
+        {% if success %}
+        <div class="success">✅ Form यशस्वीरित्या submit झाला!</div>
+        {% endif %}
+        <form method="POST">
+            <div class="form-group">
+                <label>👤 पूर्ण नाव</label>
+                <input type="text" name="naam" placeholder="तुमचे नाव टाका" required>
+            </div>
+            <div class="form-group">
+                <label>📱 मोबाईल नंबर</label>
+                <input type="tel" name="mobile" placeholder="10 digit मोबाईल नंबर" required>
+            </div>
+            <div class="form-group">
+                <label>🎂 वय</label>
+                <input type="number" name="vay" placeholder="तुमचे वय" required>
+            </div>
+            <div class="form-group">
+                <label>🎓 शिक्षण</label>
+                <select name="education">
+                    <option value="">-- निवडा --</option>
+                    <option value="10वी">10वी</option>
+                    <option value="12वी">12वी</option>
+                    <option value="पदवी">पदवी (Graduate)</option>
+                    <option value="पदव्युत्तर">पदव्युत्तर (Post Graduate)</option>
+                    <option value="इतर">इतर</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>🏘️ गाव</label>
+                <input type="text" name="gaav" placeholder="तुमचे गाव" required>
+            </div>
+            <div class="form-group">
+                <label>💡 Amit AI कडून काय हवे आहे?</label>
+                <textarea name="kaay_hav" placeholder="तुम्हाला काय मदत हवी आहे ते लिहा..." required></textarea>
+            </div>
+            <button type="submit">📤 Submit करा</button>
+        </form>
+    </div>
+</body>
+</html>

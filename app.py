@@ -12,8 +12,12 @@ def get_db():
 
 def init_db():
     conn = get_db()
-    conn.execute('''CREATE TABLE IF NOT EXISTS users 
+    cur = conn.cursor()
+    cur.execute('''CREATE TABLE IF NOT EXISTS users 
                  (id SERIAL PRIMARY KEY, username TEXT, email TEXT, password TEXT, role TEXT DEFAULT 'member')''')
+    cur.execute('''CREATE TABLE IF NOT EXISTS forms 
+                 (id SERIAL PRIMARY KEY, naam TEXT, mobile TEXT, vay TEXT, 
+                  education TEXT, gaav TEXT, kaay_hav TEXT, user_email TEXT)''')
     conn.commit()
     conn.close()
 
@@ -66,6 +70,27 @@ def profile():
     if 'user' not in session:
         return redirect('/login')
     return render_template('profile.html', username=session['user'], email=session['email'])
+
+@app.route('/forms', methods=['GET','POST'])
+def forms():
+    if 'user' not in session:
+        return redirect('/login')
+    success = False
+    if request.method == 'POST':
+        naam = request.form['naam']
+        mobile = request.form['mobile']
+        vay = request.form['vay']
+        education = request.form['education']
+        gaav = request.form['gaav']
+        kaay_hav = request.form['kaay_hav']
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute('INSERT INTO forms (naam, mobile, vay, education, gaav, kaay_hav, user_email) VALUES (%s,%s,%s,%s,%s,%s,%s)',
+                    (naam, mobile, vay, education, gaav, kaay_hav, session['email']))
+        conn.commit()
+        conn.close()
+        success = True
+    return render_template('forms.html', success=success, username=session['user'])
 
 @app.route('/admin')
 def admin():
