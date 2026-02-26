@@ -1,14 +1,19 @@
 from flask import Flask, render_template, request, redirect, session
-import sqlite3, bcrypt, os
+import bcrypt, os, psycopg2
 
 app = Flask(__name__)
 app.secret_key = 'secret123'
-DB = 'users.db'
+
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
+def get_db():
+    conn = psycopg2.connect(DATABASE_URL)
+    return conn
 
 def init_db():
-    conn = sqlite3.connect(DB)
+    conn = get_db()
     conn.execute('''CREATE TABLE IF NOT EXISTS users 
-                 (id INTEGER PRIMARY KEY, username TEXT, email TEXT, password TEXT, role TEXT DEFAULT 'member')''')
+                 (id SERIAL PRIMARY KEY, username TEXT, email TEXT, password TEXT, role TEXT DEFAULT 'member')''')
     conn.commit()
     conn.close()
 
@@ -23,8 +28,10 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         pw = request.form['password']
-        conn = sqlite3.connect(DB)
-        user = conn.execute('SELECT * FROM users WHERE email=?', (email,)).fetchone()
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM users WHERE email=%s', (email,))
+        user = cur.fetchone()
         conn.close()
         if user and bcrypt.checkpw(pw.encode(), user[3].encode()):
             session['user'] = user[1]
@@ -40,8 +47,9 @@ def signup():
         username = request.form['username']
         email = request.form['email']
         pw = bcrypt.hashpw(request.form['password'].encode(), bcrypt.gensalt()).decode()
-        conn = sqlite3.connect(DB)
-        conn.execute('INSERT INTO users (username, email, password, role) VALUES (?,?,?,?)', (username, email, pw, 'member'))
+        conn = get_db()
+        cur = conn.cursor()
+        cur.execute('INSERT INTO users (username, email, password, role) VALUES (%s,%s,%s,%s)', (username, email, pw, 'member'))
         conn.commit()
         conn.close()
         return redirect('/login')
@@ -65,8 +73,10 @@ def admin():
         return redirect('/login')
     if session.get('role') != 'admin':
         return redirect('/dashboard')
-    conn = sqlite3.connect(DB)
-    users = conn.execute('SELECT id, username, email, role FROM users').fetchall()
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('SELECT id, username, email, role FROM users')
+    users = cur.fetchall()
     conn.close()
     return render_template('admin.html', users=users, username=session['user'])
 
@@ -74,8 +84,9 @@ def admin():
 def delete_user(user_id):
     if session.get('role') != 'admin':
         return redirect('/dashboard')
-    conn = sqlite3.connect(DB)
-    conn.execute('DELETE FROM users WHERE id=?', (user_id,))
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('DELETE FROM users WHERE id=%s', (user_id,))
     conn.commit()
     conn.close()
     return redirect('/admin')
@@ -84,8 +95,9 @@ def delete_user(user_id):
 def make_admin(user_id):
     if session.get('role') != 'admin':
         return redirect('/dashboard')
-    conn = sqlite3.connect(DB)
-    conn.execute('UPDATE users SET role=? WHERE id=?', ('admin', user_id))
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute('UPDATE users SET role=%s WHERE id=%s', ('admin', user_id))
     conn.commit()
     conn.close()
     return redirect('/admin')
